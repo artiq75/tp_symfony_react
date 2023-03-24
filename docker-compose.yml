@@ -1,0 +1,54 @@
+services:
+  db:
+    restart: always
+    image: mariadb:latest
+    command: --default-authentication-plugin=caching_sha2_password
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=react
+      - MARIADB_USER=react
+      - MARIADB_PASSWORD=react
+    ports:
+      - "3307:3306"
+  app:
+    user: "${UID}:${GID}"
+    build:
+      context: ./php
+    restart: always
+    volumes:
+      - ./backend:/srv/app
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+  caddy:
+    user: "${UID}:${GID}"
+    build:
+      context: ./backend
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./backend/Caddyfile:/etc/caddy/Caddyfile
+      - ./backend:/srv/app
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+  node:
+    user: "${UID}:${GID}"
+    image: node:latest
+    tty: true
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - caddy
+volumes:
+  caddy_data:
+  caddy_config:
