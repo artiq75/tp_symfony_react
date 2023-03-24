@@ -6,6 +6,7 @@ import InfoAlbum from './InfoAlbum'
 import { useDispatch, useSelector } from 'react-redux'
 import { playPause, setActiveAlbum, setActiveSong } from '../../redux/player/playerSlice'
 import PlayPause from '../PlayPause'
+import axios from 'axios'
 
 const ToolsBarDetail = ({ dataAlbum }) => {
 
@@ -60,7 +61,7 @@ const ToolsBarDetail = ({ dataAlbum }) => {
                     />
                 </div>
                 {/* bouton pour favories */}
-                <div className='cursor-pointer' onClick={() => toggleFavorite()}>
+                <div className='cursor-pointer' onClick={toggleFavorite}>
                     {isInList ?
                         <AiFillHeart className='text-green m-3' style={{ fontSize: '30px' }} />
                         :

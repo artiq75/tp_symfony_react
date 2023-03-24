@@ -3,4 +3,8 @@
     php_fastcgi app:9000
     encode gzip
     file_server
+
+    request_body {
+        max_size 100MB
+    }
 }

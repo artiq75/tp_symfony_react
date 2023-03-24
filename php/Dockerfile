@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y git \
 		libpng-dev
 
 RUN curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o - | sh -s \
-      gd zip pdo_mysql
+      gd zip pdo_mysql intl
 
 WORKDIR /srv/app
 

@@ -7,7 +7,6 @@ const Search = () => {
 
   const { searchTitle,searchBiography, loading } = useSelector(selectAlbumsData) 
   
-
   return (
     <Searchbar/>
   )
