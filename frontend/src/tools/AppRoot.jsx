@@ -2,39 +2,36 @@ import React, { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
 import { RouterProvider } from 'react-router-dom'
 import store from '../redux/store'
-import { AuthContextProvider, useAuthContext } from './AuthContext'
+import { useAuthContext } from './AuthContext'
 import OfflineRouter from './OfflineRouter'
 import Router from './Router'
 
 const AppRoot = () => {
   const [inSession, setInSession] = useState(null)
-  const { setUserId, setIsGuest, setEmail } = useAuthContext();
-	const getUserInfos = async () => {
-		const user = JSON.parse(  localStorage.getItem( "userInfos" ) );
+  const { userId, setUserId, setIsGuest, setEmail } = useAuthContext()
 
-		if ( user ) {
-			setUserId( user.userId );
-			setIsGuest( user.isGuest );
-			setEmail( user.email );
+  const getUserInfos = async () => {
+    const user = JSON.parse(localStorage.getItem('userInfos'))
+
+    if (user) {
+      setUserId(user.userId)
+      setIsGuest(user.isGuest)
+      setEmail(user.email)
       setInSession(true)
-
-		}else{
+    } else {
       setInSession(false)
     }
+  }
 
-	};
+  useEffect(() => {
+    getUserInfos()
+  }, [userId])
 
-	useEffect( () => { getUserInfos(); }, [] );
   return (
-    <AuthContextProvider>
-      {/* on appelle notre store */}
-      <Provider store={store}>
-        {/* on appelle le router pour gérer les url */}
-        <RouterProvider router={inSession ? Router : OfflineRouter} />
-      
-      </Provider>
-
-    </AuthContextProvider>
+    <Provider store={store}>
+      {/* on appelle le router pour gérer les url */}
+      <RouterProvider router={inSession ? Router : OfflineRouter} />
+    </Provider>
   )
 }
 

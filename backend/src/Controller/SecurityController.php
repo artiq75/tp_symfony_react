@@ -35,6 +35,7 @@ class SecurityController extends AbstractController
                 'success' => true,
                 'id' => $this->getUser()->getId(),
                 'email' => $this->getUser()->getEmail(),
+                'nickname' => $this->getUser()->getNickname(),
                 'message' => 'Utilisateur déja en session'
             ]);
         }
@@ -46,6 +47,7 @@ class SecurityController extends AbstractController
             'success' => true,
             'id' => $this->getUser()->getId(),
             'email' => $this->getUser()->getEmail(),
+            'nickname' => $this->getUser()->getNickname(),
             'last_username' => $lastUsername,
             'error' => $error?->getMessage(),
             'message' => 'Connexion réussie'

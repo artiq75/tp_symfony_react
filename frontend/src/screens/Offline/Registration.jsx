@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { redirect } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { apiRoot } from '../../constants/apiConstant';
 import { useAuthContext } from '../../tools/AuthContext';
 
 const Registration = () => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nickname, setNickname] = useState('');
+  const navigate = useNavigate()
 
   const { signIn } = useAuthContext();
 
@@ -21,7 +21,6 @@ const Registration = () => {
         nickname,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.email) {
           const user = {
             userId: response.data.id,
@@ -30,7 +29,7 @@ const Registration = () => {
           }
           try {
             signIn(user);
-            redirect('/')
+            navigate('/')
 
           } catch (error) {
             console.log('error: ', error)
@@ -89,6 +88,7 @@ const Registration = () => {
             onChange={(event) => setNickname(event.target.value)}
           />
         </div>
+        <Link to="/" className='text-white'>Déjà inscrit</Link>
         <div className="flex items-center justify-center pt-5">
           <button
             className="bg-green_06 hover:bg-green_top w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
