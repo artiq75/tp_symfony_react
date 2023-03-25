@@ -44,7 +44,7 @@ class Album
     private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Playlist:item'])]
     private ?string $imagePath = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

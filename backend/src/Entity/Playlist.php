@@ -13,6 +13,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 #[ApiResource(
+    normalizationContext: [
+        'groups' => ['read:Playlist:item', 'write:Playlist:collection']
+    ],
     denormalizationContext: [
         'groups' => ['write:Playlist:collection']
     ]
@@ -28,17 +31,19 @@ class Playlist
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:Playlist:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['groups' => 'write:Playlist:collection'])]
+    #[Groups(['write:Playlist:collection'])]
     private ?string $title = null;
 
     #[ORM\ManyToOne(inversedBy: 'playlists')]
-    #[Groups(['groups' => 'write:Playlist:collection'])]
+    #[Groups(['write:Playlist:collection'])]
     private ?User $user = null;
 
     #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'playlists')]
+    #[Groups(['write:Playlist:collection'])]
     private Collection $songs;
 
     public function __construct()

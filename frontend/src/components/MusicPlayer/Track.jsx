@@ -8,7 +8,7 @@ const Track = ({ isPlaying, isActive, activeSong, currentAlbum }) => {
             <div className={`${isPlaying && isActive ? 'animate-[spin_3s_linear_infinite]' : ''} 
                                                         hidden sm:block h-16 w-16 mr-4`}>
                 <img
-                    src={`${apiImage}/${currentAlbum?.imagePath}`}
+                    src={`${apiImage}/${currentAlbum?.imagePath ?? activeSong.album.imagePath}`}
                     alt={currentAlbum?.title}
                     className='rounded-full' />
             </div>

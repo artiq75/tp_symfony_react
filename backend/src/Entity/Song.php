@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,19 +14,21 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[Vich\Uploadable]
+#[ApiResource]
 class Song
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['album:read', 'read:Playlist:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Playlist:item'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Playlist:item'])]
     private ?string $filePath = null;
 
     //Ajout d'une nouvelle propriété
@@ -33,10 +36,11 @@ class Song
     private ?File $filePathFile = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Playlist:item'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'songs')]
+    #[Groups(['read:Playlist:item'])]
     private ?Album $album = null;
 
     #[ORM\ManyToMany(targetEntity: Playlist::class, inversedBy: 'songs')]
