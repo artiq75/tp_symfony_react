@@ -30,15 +30,13 @@ const Registration = () => {
           try {
             signIn(user);
             navigate('/')
-
           } catch (error) {
             console.log('error: ', error)
           }
-
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log('REGISTRATION: ', error);
       });
   };
 

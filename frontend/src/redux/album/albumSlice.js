@@ -47,7 +47,6 @@ export const fetchAlbums = () => async dispatch => {
         console.error(error);
         dispatch(setLoading(false));
     }
-
 }
 
 export const fetchSearch = (word) => async dispatch => {

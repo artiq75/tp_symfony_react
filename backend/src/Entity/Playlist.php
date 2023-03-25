@@ -2,14 +2,27 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PlaylistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: [
+        'groups' => ['write:Playlist:collection']
+    ]
+)]
+#[ApiFilter(
+    SearchFilter::class,
+    properties: [
+        'user' => 'exact'
+    ]
+)]
 class Playlist
 {
     #[ORM\Id]
@@ -18,9 +31,11 @@ class Playlist
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['groups' => 'write:Playlist:collection'])]
     private ?string $title = null;
 
     #[ORM\ManyToOne(inversedBy: 'playlists')]
+    #[Groups(['groups' => 'write:Playlist:collection'])]
     private ?User $user = null;
 
     #[ORM\ManyToMany(targetEntity: Song::class, mappedBy: 'playlists')]

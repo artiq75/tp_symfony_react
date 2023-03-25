@@ -1,13 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { dataAlbumNav, dataUserNav, imgLogo } from '../constants/appConstant'
 import { RiCloseLine } from 'react-icons/ri'
 import { HiOutlineMenu } from 'react-icons/hi'
-import { selectPlaylists } from '../redux/playlist/playlistSlice'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchPlaylists } from '../redux/playlist/playlistSlice'
+import { useAuthContext } from '../tools/AuthContext'
 
 //constante pour générer les différents onglets de la sidebar à partir de appConstants
 const NavLinks = ({ onClick }) => {
+  //constante qui récupère le hook de react-redux
+  const dispatch = useDispatch()
+
+  const { userId, signOut } = useAuthContext()
+
+  //on utilise le hook useEffect pour "dispatcher" lors du montage du composant
+  useEffect(() => {
+    //on dispach fetchPlaylists dès que l'on monte le composant
+    dispatch(fetchPlaylists(userId))
+  }, [dispatch, userId]) // dans l'update on rappelle dispatch pour mettre à jour les infos
+
+  const playlits = useSelector((state) => state.playlists.playlists)
+
   return (
     <>
       <div className="mt-10">
@@ -20,7 +34,7 @@ const NavLinks = ({ onClick }) => {
             className={
               'flex flex-row p-3 items-center justify-start font-medium text-sm text-white hover:bg-green_06'
             }
-            onClick={(e) => onClick.call(this, e, item)}
+            onClick={onClick}
           >
             <item.icon className="w-6 h-6 mr-2" />
             {item.title}
@@ -32,14 +46,29 @@ const NavLinks = ({ onClick }) => {
         {dataUserNav.map((item) => (
           <NavLink
             key={item.title}
-            to={`/playlist/${item.id}`}
+            to={item.path}
             end
             className={
               'flex flex-row p-3 items-center justify-start font-medium text-sm text-white hover:bg-green_06'
             }
-            onClick={(e) => onClick.call(this, e, item)}
+            onClick={onClick}
           >
             <item.icon className="w-6 h-6 mr-2" />
+            {item.title}
+          </NavLink>
+        ))}
+      </div>
+      <div className="mt-5">
+        <p>Playlists</p>
+        {playlits?.map((item) => (
+          <NavLink
+            key={item.id}
+            to={`/playlists/${item.id}`}
+            end
+            className={
+              'flex flex-row p-3 items-center justify-start font-medium text-sm text-white hover:bg-green_06'
+            }
+          >
             {item.title}
           </NavLink>
         ))}
@@ -50,12 +79,6 @@ const NavLinks = ({ onClick }) => {
 
 const Sidebar = () => {
   const [mobileMenu, setMobileMenu] = useState(false)
-  const playlits = useSelector(selectPlaylists)
-
-  const handleClick = function (e) {
-    console.log(e)
-    setMobileMenu(false)
-  }
 
   return (
     <>
@@ -85,23 +108,6 @@ const Sidebar = () => {
       >
         <img src={imgLogo} alt="Logo" className="w-full h-14 object-contain" />
         <NavLinks onClick={() => setMobileMenu(true)} />
-      </div>
-      <div className="mt-5">
-        {/* on va mapper sur le tableau dataAlbumNav */}
-        {playlits.length > 0 &&
-          playlits.map((item) => (
-            <div
-              key={item.id}
-              to={item.path}
-              end
-              className={
-                'flex flex-row p-3 items-center justify-start font-medium text-sm text-white hover:bg-green_06'
-              }
-              onClick={(e) => onClick.call(this, e, item)}
-            >
-              {item.name}
-            </div>
-          ))}
       </div>
     </>
   )

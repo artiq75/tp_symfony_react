@@ -8,7 +8,7 @@ import Router from './Router'
 
 const AppRoot = () => {
   const [inSession, setInSession] = useState(null)
-  const { userId, setUserId, setIsGuest, setEmail } = useAuthContext()
+  const { userId, setUserId, setIsGuest, setEmail, setNickname } = useAuthContext()
 
   const getUserInfos = async () => {
     const user = JSON.parse(localStorage.getItem('userInfos'))
@@ -17,6 +17,7 @@ const AppRoot = () => {
       setUserId(user.userId)
       setIsGuest(user.isGuest)
       setEmail(user.email)
+      setNickname(user.nickname)
       setInSession(true)
     } else {
       setInSession(false)

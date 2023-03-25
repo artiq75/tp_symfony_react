@@ -5,6 +5,7 @@ import ErrorPage from "../screens/ErrorPage";
 import Home from "../screens/Home";
 import Library from "../screens/Library";
 import Playlist from "../screens/Playlist";
+import DetailPlaylist from "../screens/DetailPlaylist";
 import Search from "../screens/Search";
 import Wishlist from "../screens/Wishlist";
 
@@ -37,6 +38,10 @@ const Router = createBrowserRouter([
             {
                 path: '/add-playlist',
                 element: <Playlist/>
+            },
+            {
+                path: '/playlists/:id',
+                element: <DetailPlaylist />
             },
             {
                 path: '/wishlist',

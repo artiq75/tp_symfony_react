@@ -23,7 +23,7 @@ const AuthContextProvider = ({ children }) => {
       setUserId(user.userId)
       setIsGuest(user.isGuest)
       setEmail(user.email)
-      setNickname(user.username)
+      setNickname(user.nickname)
       localStorage.setItem('userInfos', JSON.stringify(user))
     } catch (error) {
       throw new Error(`error: ${error}`)
@@ -46,9 +46,11 @@ const AuthContextProvider = ({ children }) => {
     userId,
     isGuest,
     email,
+    nickname,
     setUserId,
     setIsGuest,
     setEmail,
+    setNickname,
     signIn,
     signOut
   }

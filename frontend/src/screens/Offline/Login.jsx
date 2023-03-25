@@ -34,7 +34,7 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log('LOGIN: ', error)
       })
   }
 
