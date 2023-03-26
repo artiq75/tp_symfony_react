@@ -18,11 +18,11 @@ class Artist
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?string $biography = null;
 
     #[ORM\OneToMany(mappedBy: 'artist', targetEntity: Album::class)]

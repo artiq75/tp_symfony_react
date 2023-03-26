@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   AiFillHeart,
   AiOutlineHeart,
@@ -17,16 +17,36 @@ import PlayPause from '../PlayPause'
 import axios from 'axios'
 import { api } from '../../constants/apiConstant'
 import { useAuthContext } from '../../tools/AuthContext'
+import {
+  addPreference,
+  deletePreference,
+  fetchPreferences
+} from '../../redux/preference/preferenceSlice'
 
 const ToolsBarDetail = ({ dataAlbum }) => {
   //redefinir des variables pour le playpause
   const data = dataAlbum
   const songs = dataAlbum?.songs
   const [index, setIndex] = useState(0)
-  const [isInList, setIsInList] = useState(false) //TODO récupérer la vrai valeur en BDD
   const [isCollapse, setIsCollapse] = useState(true)
 
   const { userId } = useAuthContext()
+
+  useEffect(() => {
+    dispatch(fetchPreferences(userId))
+  }, [userId])
+
+  const { preferences } = useSelector((state) => state.preferences)
+
+  const inList = useMemo(() => {
+    return preferences.some((p) => p.album.id === dataAlbum.id)
+  }, [preferences, dataAlbum])
+
+  const [isInList, setIsInList] = useState(false) //TODO récupérer la vrai valeur en BDD
+
+  useEffect(() => {
+    setIsInList(inList)
+  }, [inList])
 
   const { isPlaying, activeSong } = useSelector((state) => state.player)
   //on récupère le hook de react redux
@@ -47,14 +67,23 @@ const ToolsBarDetail = ({ dataAlbum }) => {
   }
 
   const toggleFavorite = () => {
+    const preference = preferences.find((p) => p.album.id === dataAlbum.id)
     if (!isInList) {
-      axios.post(`${api}/preferences`, {
-        user: `/api/users/${userId}`,
-        album: data['@id']
-      })
+      axios
+        .post(`${api}/preferences`, {
+          user: `/api/users/${userId}`,
+          album: data['@id']
+        })
+        .then(({ data }) => {
+          console.log(data)
+          dispatch(addPreference(data))
+          setIsInList(true)
+        })
     } else {
+      axios.delete(`${api}/preferences/${preference.id}`)
+      dispatch(deletePreference(preference.id))
+      setIsInList(false)
     }
-    setIsInList(!isInList)
     //TODO mettre à jour la BDD pour ajouter ou enlever de la liste des favories
   }
 

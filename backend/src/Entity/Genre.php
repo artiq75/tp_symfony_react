@@ -17,7 +17,7 @@ class Genre
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?string $label = null;
 
     #[ORM\OneToMany(mappedBy: 'genre', targetEntity: Album::class)]

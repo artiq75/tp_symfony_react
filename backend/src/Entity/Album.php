@@ -32,19 +32,19 @@ class Album
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?\DateTimeInterface $releaseDate = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['album:read', 'read:Playlist:item'])]
+    #[Groups(['album:read', 'read:Preference:item', 'read:Playlist:item'])]
     private ?string $imagePath = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -54,18 +54,18 @@ class Album
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'albums')]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?Genre $genre = null;
 
     #[ORM\ManyToOne(inversedBy: 'albums')]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private ?Artist $artist = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $isActive = null;
 
     #[ORM\OneToMany(mappedBy: 'album', targetEntity: Song::class)]
-    #[Groups('album:read')]
+    #[Groups(['album:read', 'read:Preference:item'])]
     private Collection $songs;
 
     public function __construct()

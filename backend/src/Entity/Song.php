@@ -20,15 +20,15 @@ class Song
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['album:read', 'read:Playlist:item'])]
+    #[Groups(['album:read', 'read:Playlist:item', 'read:Preference:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['album:read', 'read:Playlist:item'])]
+    #[Groups(['album:read', 'read:Playlist:item', 'read:Preference:item'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['album:read', 'read:Playlist:item'])]
+    #[Groups(['album:read', 'read:Playlist:item', 'read:Preference:item'])]
     private ?string $filePath = null;
 
     //Ajout d'une nouvelle propriété
@@ -36,7 +36,7 @@ class Song
     private ?File $filePathFile = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['album:read', 'read:Playlist:item'])]
+    #[Groups(['album:read', 'read:Playlist:item', 'read:Preference:item'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'songs')]
