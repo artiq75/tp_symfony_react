@@ -25,6 +25,7 @@ const Registration = () => {
           const user = {
             userId: response.data.id,
             email: response.data.email,
+            nickname: response.data.nickname,
             isGuest: "standard"
           }
           try {
