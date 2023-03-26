@@ -7,10 +7,11 @@ import { useAuthContext } from '../../tools/AuthContext'
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const navigate = useNavigate()
-
+  
   const { signIn } = useAuthContext()
-
+  
+  const navigate = useNavigate()
+  
   const handleSubmit = (event) => {
     event.preventDefault()
     axios
