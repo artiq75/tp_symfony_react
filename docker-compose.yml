@@ -3,8 +3,10 @@ services:
     restart: always
     image: mariadb:latest
     command: --default-authentication-plugin=caching_sha2_password
+    working_dir: /app
     volumes:
       - ./mysql:/var/lib/mysql
+      - ./:/app
     environment:
       - MARIADB_ROOT_PASSWORD=root
       - MARIADB_DATABASE=react

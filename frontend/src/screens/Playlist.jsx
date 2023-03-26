@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { BiAddToQueue } from 'react-icons/bi'
 import { addPlaylist } from '../redux/playlist/playlistSlice'
 import axios from 'axios'
 import { api } from '../constants/apiConstant'
 import { useAuthContext } from '../tools/AuthContext'
+import Loader from '../components/Loader'
 
 const Playlist = () => {
   const [title, setTitle] = useState('')
@@ -13,6 +14,8 @@ const Playlist = () => {
   const dispatch = useDispatch()
 
   const { userId } = useAuthContext()
+
+  const { loading } = useSelector((state) => state.playlists)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -36,7 +39,9 @@ const Playlist = () => {
       })
   }
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <div>
       <form
         autoComplete="off"

@@ -6,11 +6,10 @@ import Loader from '../components/Loader'
 import AlbumCard from '../components/AlbumCard'
 
 const Home = () => {
-
   //constante qui récupère le hook de react-redux
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  //on récupère les infos du slice de player 
+  //on récupère les infos du slice de player
   //pour savoir si une chanson est en cours de lecture et si le player est actif
   const { activeSong, isPlaying } = useSelector((state) => state.player)
 
@@ -18,22 +17,23 @@ const Home = () => {
   useEffect(() => {
     //on dispach fetchAlbum dès que l'on monte le composant
     dispatch(fetchAlbums())
-  }, [dispatch])// dans l'update on rappelle dispatch pour mettre à jour les infos
+  }, [dispatch]) // dans l'update on rappelle dispatch pour mettre à jour les infos
 
   const { albums, loading } = useSelector(selectAlbumsData)
 
-  const dataAlbum = albums['hydra:member'];
+  const dataAlbum = albums['hydra:member']
 
-  return (
-    loading ? <Loader /> :
-
-      <div className='flex flex-col'>
-        <h2 className='font-bold text-3xl text-white text-left mt-4 mb-10'>
-          Tous les albums
-        </h2>
-        <div className='flex flex-wrap md:justify-start justify-center gap-8'>
-          {/* on va mapper sur dataAlbum dès que les infos sont chargées */}
-          {dataAlbum && dataAlbum.map((data, index) => {
+  return loading ? (
+    <Loader />
+  ) : (
+    <div className="flex flex-col">
+      <h2 className="font-bold text-3xl text-white text-left mt-4 mb-10">
+        Tous les albums
+      </h2>
+      <div className="flex flex-wrap md:justify-start justify-center gap-8">
+        {/* on va mapper sur dataAlbum dès que les infos sont chargées */}
+        {dataAlbum &&
+          dataAlbum.map((data, index) => {
             return (
               //on appelle le composant AlbumCard
               <AlbumCard
@@ -52,8 +52,8 @@ const Home = () => {
               />
             )
           })}
-        </div>
       </div>
+    </div>
   )
 }
 

@@ -12,7 +12,7 @@ const NavLinks = ({ onClick }) => {
   //constante qui récupère le hook de react-redux
   const dispatch = useDispatch()
 
-  const { userId, signOut } = useAuthContext()
+  const { userId } = useAuthContext()
 
   //on utilise le hook useEffect pour "dispatcher" lors du montage du composant
   useEffect(() => {
