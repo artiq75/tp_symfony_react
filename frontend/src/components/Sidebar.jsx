@@ -6,6 +6,7 @@ import { HiOutlineMenu } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchPlaylists } from '../redux/playlist/playlistSlice'
 import { useAuthContext } from '../tools/AuthContext'
+import { BiAddToQueue } from 'react-icons/bi'
 
 //constante pour générer les différents onglets de la sidebar à partir de appConstants
 const NavLinks = ({ onClick }) => {
@@ -58,8 +59,8 @@ const NavLinks = ({ onClick }) => {
           </NavLink>
         ))}
       </div>
+      <div className="border-t"></div>
       <div className="mt-5">
-        <p>Playlists</p>
         {playlits?.map((item) => (
           <NavLink
             key={item.id}
